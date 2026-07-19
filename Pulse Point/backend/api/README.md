@@ -1,111 +1,181 @@
-# Pulse Point Backend API
+# Ticker Flip Backend API
 
-## 1) Install dependencies
+For real public deployment, see [PRODUCTION_DEPLOYMENT.md](./PRODUCTION_DEPLOYMENT.md).
+
+This is the local server that lets the iPhone app save data into MySQL on this Mac.
+
+Think of it like this:
+
+```text
+iPhone app -> Node API on Mac -> MySQL database on Mac -> browser admin dashboard
+```
+
+The iPhone app does **not** connect directly to MySQL. It talks to this API.
+
+## 1) Start in this folder
+
 ```bash
 cd "/Users/guysmacbookpro/Documents/Heartbeat Video App/Pulse Point/backend/api"
+```
+
+## 2) Install dependencies, if needed
+
+```bash
 npm install
 ```
 
-## 2) Configure env
-```bash
-cp .env.example .env
-```
-Then edit `.env` with your MySQL credentials.
+## 3) Check `.env`
 
-## 3) Start API
-```bash
-npm run dev
-```
+The API reads database settings from `.env`.
 
-Server default: `http://localhost:3000`
+Required values:
 
-## 4) Health check
 ```bash
-curl http://localhost:3000/health
+PORT=3000
+API_KEY=your_local_api_key
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB_NAME=myapp_db
 ```
 
-## 4.1) Verify video upload endpoint
+Optional:
+
 ```bash
-curl -X POST "http://localhost:3000/api/upload/video" \
-  -H "x-api-key: replace_me" \
-  -F "video=@/absolute/path/to/video.mov"
+ADMIN_PASSWORD=make_one_up_if_you_want_remote_admin_login
+PUBLIC_BASE_URL=http://localhost:3000
 ```
 
-Expected response includes:
-- `videoUrl`
+If `ADMIN_PASSWORD` is blank, `/admin` only works from this Mac using `localhost`.
 
-## 5) Example: create session with full payload
+## 4) Create/update the database tables
+
 ```bash
-curl -X POST http://localhost:3000/api/sessions/full \
+npm run setup-db
+```
+
+This creates/updates:
+
+- `users`
+- `workout_sessions`
+- `heart_rate_samples`
+- `pvt_results`
+- `pvt_trial_points`
+
+## 5) Start the API
+
+```bash
+npm start
+```
+
+Leave that Terminal window open while testing the app.
+
+## 6) Open the dashboard
+
+On the Mac, open:
+
+```text
+http://localhost:3000/admin
+```
+
+That page shows users, sessions, heart-rate samples, PVT results, and uploaded video links.
+
+## 7) Test the API from Terminal
+
+Health check:
+
+```bash
+curl "http://localhost:3000/health"
+```
+
+Create/update a test user:
+
+```bash
+curl -X POST "http://localhost:3000/api/users/resolve" \
   -H "Content-Type: application/json" \
-  -H "x-api-key: replace_me" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{"email":"test@tickerflip.local","displayName":"Test User","age":25,"weightLb":180,"heightCm":177.8,"gender":"Test"}'
+```
+
+Upload a test session:
+
+```bash
+curl -X POST "http://localhost:3000/api/sessions/full" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
   -d '{
     "session": {
-      "userId": 1,
-      "sessionUuid": "11111111-2222-3333-4444-555555555555",
-      "title": "Demo Workout",
-      "startedAt": "2026-03-01 10:00:00",
-      "endedAt": "2026-03-01 10:10:00",
-      "durationSeconds": 600,
-      "minBpm": 95,
-      "avgBpm": 138,
-      "maxBpm": 172,
-      "videoUrl": "https://example.com/video.mov"
+      "userEmail":"test@tickerflip.local",
+      "displayName":"Test User",
+      "sessionUuid":"11111111-2222-3333-4444-555555555555",
+      "startedAt":"2026-07-19 12:00:00",
+      "endedAt":"2026-07-19 12:01:00",
+      "durationSeconds":60,
+      "minBpm":72,
+      "avgBpm":96,
+      "maxBpm":138,
+      "videoUrl":null
     },
-    "heartRateSamples": [
-      {"tSeconds": 0.0, "bpm": 95},
-      {"tSeconds": 1.0, "bpm": 97}
+    "heartRateSamples":[
+      {"tSeconds":0,"bpm":72},
+      {"tSeconds":15,"bpm":92},
+      {"tSeconds":30,"bpm":122},
+      {"tSeconds":45,"bpm":138},
+      {"tSeconds":60,"bpm":105}
     ],
-    "prePvt": {
-      "phase": "pre",
-      "durationSeconds": 60,
-      "totalStimuli": 12,
-      "correctTaps": 10,
-      "incorrectTaps": 1,
-      "falseStarts": 1,
-      "misses": 1,
-      "lapses": 2,
-      "meanReactionMs": 320,
-      "medianReactionMs": 300,
-      "fastestReactionMs": 210,
-      "slowestReactionMs": 640,
-      "trialPoints": [
-        {"trialIndex": 1, "reactionMs": 250},
-        {"trialIndex": 2, "reactionMs": 310}
-      ]
-    },
-    "postPvt": {
-      "phase": "post",
-      "durationSeconds": 60,
-      "totalStimuli": 12,
-      "correctTaps": 9,
-      "incorrectTaps": 2,
-      "falseStarts": 2,
-      "misses": 2,
-      "lapses": 3,
-      "meanReactionMs": 390,
-      "medianReactionMs": 370,
-      "fastestReactionMs": 240,
-      "slowestReactionMs": 790,
-      "trialPoints": [
-        {"trialIndex": 1, "reactionMs": 300},
-        {"trialIndex": 2, "reactionMs": 420}
-      ]
-    }
+    "prePvt":null,
+    "postPvt":null
   }'
 ```
 
-## API routes
+List sessions for one user:
+
+```bash
+curl -X GET "http://localhost:3000/api/sessions?userEmail=test%40tickerflip.local" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+## 8) Make the iPhone reach the Mac
+
+In the app Settings, the API Base URL must be the Mac's Wi-Fi IP, not `127.0.0.1`.
+
+Example:
+
+```text
+http://192.168.1.25:3000
+```
+
+`127.0.0.1` means “this device.” On your iPhone, that would point to the iPhone itself, not the Mac.
+
+To find the Mac IP:
+
+```bash
+ipconfig getifaddr en0
+```
+
+Then use:
+
+```text
+http://YOUR_MAC_IP:3000
+```
+
+The API key in the app must match the `.env` API key.
+
+## Routes
+
 - `GET /health`
+- `GET /admin`
+- `GET /admin/users/:id`
+- `GET /admin/sessions/:id`
+- `POST /api/users/resolve`
 - `POST /api/users/register`
+- `POST /api/upload/video`
 - `POST /api/sessions`
+- `POST /api/sessions/full`
 - `POST /api/sessions/:sessionId/heart-rate`
 - `POST /api/pvt-results`
-- `POST /api/sessions/full`
-- `GET /api/sessions?userId=...`
+- `GET /api/sessions?userEmail=...`
 - `GET /api/sessions/:sessionId`
 - `GET /api/sessions/:sessionId/heart-rate`
 - `GET /api/sessions/:sessionId/pvt-comparison`
-
-## Xcode integration note
-Your iPhone app should call this API, not MySQL directly.

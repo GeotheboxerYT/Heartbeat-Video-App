@@ -17,6 +17,49 @@ struct APISessionListItem: Decodable, Identifiable {
     let avg_bpm: Int?
     let max_bpm: Int?
     let video_url: String?
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case session_uuid
+        case title
+        case note
+        case started_at
+        case ended_at
+        case duration_seconds
+        case min_bpm
+        case avg_bpm
+        case max_bpm
+        case video_url
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        session_uuid = try container.decode(String.self, forKey: .session_uuid)
+        title = try container.decodeIfPresent(String.self, forKey: .title)
+        note = try container.decodeIfPresent(String.self, forKey: .note)
+        started_at = try container.decode(String.self, forKey: .started_at)
+        ended_at = try container.decodeIfPresent(String.self, forKey: .ended_at)
+        duration_seconds = try Self.decodeLossyDouble(from: container, key: .duration_seconds)
+        min_bpm = try container.decodeIfPresent(Int.self, forKey: .min_bpm)
+        avg_bpm = try container.decodeIfPresent(Int.self, forKey: .avg_bpm)
+        max_bpm = try container.decodeIfPresent(Int.self, forKey: .max_bpm)
+        video_url = try container.decodeIfPresent(String.self, forKey: .video_url)
+    }
+
+    private static func decodeLossyDouble(
+        from container: KeyedDecodingContainer<CodingKeys>,
+        key: CodingKeys
+    ) throws -> Double {
+        if let value = try? container.decode(Double.self, forKey: key) {
+            return value
+        }
+        if let string = try? container.decode(String.self, forKey: key),
+           let value = Double(string) {
+            return value
+        }
+        return 0
+    }
 }
 
 struct APIHeartRateSample: Decodable {
@@ -26,7 +69,14 @@ struct APIHeartRateSample: Decodable {
 
 struct APIFullSessionUploadRequest: Encodable {
     struct Session: Encodable {
-        let userId: Int
+        let userId: Int?
+        let userEmail: String?
+        let firebaseUid: String?
+        let displayName: String?
+        let age: Int?
+        let weightLb: Double?
+        let heightCm: Double?
+        let gender: String?
         let sessionUuid: String
         let title: String?
         let note: String?
@@ -81,6 +131,23 @@ struct APIVideoUploadResponse: Decodable {
     let fileName: String?
 }
 
+struct APIUserResolveRequest: Encodable {
+    let email: String
+    let displayName: String?
+    let firebaseUid: String?
+    let age: Int?
+    let weightLb: Double?
+    let heightCm: Double?
+    let gender: String?
+    let termsAcceptedAt: String?
+}
+
+struct APIUserResolveResponse: Decodable {
+    let userId: Int
+    let email: String?
+    let displayName: String?
+}
+
 enum APIClientError: LocalizedError {
     case invalidBaseURL
     case badStatusCode(Int, String)
@@ -95,7 +162,7 @@ enum APIClientError: LocalizedError {
     }
 }
 
-final class APIClient {
+final class APIClient: @unchecked Sendable {
     static let shared = APIClient()
 
     private let session: URLSession
@@ -120,6 +187,34 @@ final class APIClient {
     func listSessions(userId: Int) async throws -> [APISessionListItem] {
         let data = try await request(path: "/api/sessions?userId=\(userId)", method: "GET", body: nil)
         return try decoder.decode([APISessionListItem].self, from: data)
+    }
+
+    func listSessions(userEmail: String) async throws -> [APISessionListItem] {
+        let encodedEmail = Self.percentEncodeQueryValue(userEmail)
+        let data = try await request(path: "/api/sessions?userEmail=\(encodedEmail)", method: "GET", body: nil)
+        return try decoder.decode([APISessionListItem].self, from: data)
+    }
+
+    func resolveUser(
+        email: String,
+        displayName: String?,
+        firebaseUid: String?,
+        profile: UserOnboardingProfile?,
+        termsAccepted: Bool
+    ) async throws -> APIUserResolveResponse {
+        let payload = APIUserResolveRequest(
+            email: email,
+            displayName: displayName,
+            firebaseUid: firebaseUid,
+            age: profile?.age,
+            weightLb: profile?.weightLb,
+            heightCm: profile?.heightCm,
+            gender: profile?.gender,
+            termsAcceptedAt: termsAccepted ? Self.sqlTimestamp(from: Date()) : nil
+        )
+        let body = try encoder.encode(payload)
+        let data = try await request(path: "/api/users/resolve", method: "POST", body: body)
+        return try decoder.decode(APIUserResolveResponse.self, from: data)
     }
 
     func heartRateSamples(sessionId: Int) async throws -> [HeartRateSample] {
@@ -191,6 +286,20 @@ final class APIClient {
             let bodyText = String(data: data, encoding: .utf8) ?? "(no response body)"
             throw APIClientError.badStatusCode(http.statusCode, bodyText)
         }
+    }
+
+    private static func percentEncodeQueryValue(_ value: String) -> String {
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: "&=?+")
+        return value.addingPercentEncoding(withAllowedCharacters: allowed) ?? value
+    }
+
+    private static func sqlTimestamp(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone.current
+        return formatter.string(from: date)
     }
 }
 

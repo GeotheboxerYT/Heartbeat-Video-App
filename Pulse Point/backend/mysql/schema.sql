@@ -1,24 +1,31 @@
--- Heartbeat Video App schema (MySQL 8+)
+-- Ticker Flip local MySQL schema (MySQL 8+)
+-- This file is for reference/manual setup. The easiest setup is: npm run setup-db
 
-CREATE DATABASE IF NOT EXISTS heartbeat_video_app
+CREATE DATABASE IF NOT EXISTS myapp_db
   CHARACTER SET utf8mb4
-  COLLATE utf8mb4_0900_ai_ci;
+  COLLATE utf8mb4_unicode_ci;
 
-USE heartbeat_video_app;
+USE myapp_db;
 
--- App users (local auth placeholder; move auth to provider/backend as you scale)
 CREATE TABLE IF NOT EXISTS users (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  firebase_uid VARCHAR(128) NULL,
   email VARCHAR(255) NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
+  password_hash VARCHAR(255) NULL,
   display_name VARCHAR(120) NULL,
+  age INT UNSIGNED NULL,
+  weight_lb DECIMAL(6,2) NULL,
+  height_cm DECIMAL(6,2) NULL,
+  gender VARCHAR(40) NULL,
+  terms_accepted_at DATETIME NULL,
+  last_seen_at DATETIME NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  UNIQUE KEY ux_users_email (email)
+  UNIQUE KEY ux_users_email (email),
+  UNIQUE KEY ux_users_firebase_uid (firebase_uid)
 ) ENGINE=InnoDB;
 
--- One row per recorded workout
 CREATE TABLE IF NOT EXISTS workout_sessions (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id BIGINT UNSIGNED NOT NULL,
@@ -36,13 +43,9 @@ CREATE TABLE IF NOT EXISTS workout_sessions (
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY ux_workout_sessions_uuid (session_uuid),
-  KEY ix_workout_sessions_user_started (user_id, started_at),
-  CONSTRAINT fk_workout_sessions_user
-    FOREIGN KEY (user_id) REFERENCES users(id)
-    ON DELETE CASCADE ON UPDATE CASCADE
+  KEY ix_workout_sessions_user_started (user_id, started_at)
 ) ENGINE=InnoDB;
 
--- Heart rate timeline samples for each session
 CREATE TABLE IF NOT EXISTS heart_rate_samples (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   workout_session_id BIGINT UNSIGNED NOT NULL,
@@ -50,13 +53,9 @@ CREATE TABLE IF NOT EXISTS heart_rate_samples (
   bpm SMALLINT UNSIGNED NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  KEY ix_hrs_session_time (workout_session_id, t_seconds),
-  CONSTRAINT fk_hrs_session
-    FOREIGN KEY (workout_session_id) REFERENCES workout_sessions(id)
-    ON DELETE CASCADE ON UPDATE CASCADE
+  KEY ix_hrs_session_time (workout_session_id, t_seconds)
 ) ENGINE=InnoDB;
 
--- PVT summary results (supports pre/post linked to one workout)
 CREATE TABLE IF NOT EXISTS pvt_results (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id BIGINT UNSIGNED NOT NULL,
@@ -76,16 +75,9 @@ CREATE TABLE IF NOT EXISTS pvt_results (
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   KEY ix_pvt_user_created (user_id, created_at),
-  KEY ix_pvt_session_phase (workout_session_id, phase),
-  CONSTRAINT fk_pvt_user
-    FOREIGN KEY (user_id) REFERENCES users(id)
-    ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_pvt_session
-    FOREIGN KEY (workout_session_id) REFERENCES workout_sessions(id)
-    ON DELETE SET NULL ON UPDATE CASCADE
+  KEY ix_pvt_session_phase (workout_session_id, phase)
 ) ENGINE=InnoDB;
 
--- Per-trial reaction points for plotting pre vs post charts
 CREATE TABLE IF NOT EXISTS pvt_trial_points (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   pvt_result_id BIGINT UNSIGNED NOT NULL,
@@ -93,8 +85,5 @@ CREATE TABLE IF NOT EXISTS pvt_trial_points (
   reaction_ms INT UNSIGNED NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  KEY ix_pvt_trials_result_trial (pvt_result_id, trial_index),
-  CONSTRAINT fk_pvt_trials_result
-    FOREIGN KEY (pvt_result_id) REFERENCES pvt_results(id)
-    ON DELETE CASCADE ON UPDATE CASCADE
+  KEY ix_pvt_trials_result_trial (pvt_result_id, trial_index)
 ) ENGINE=InnoDB;

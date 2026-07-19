@@ -1,0 +1,16 @@
+# Local secrets
+.env
+*.env
+!.env.example
+
+# Node backend generated files
+node_modules/
+uploads/
+
+# Xcode generated files
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# macOS
+.DS_Store

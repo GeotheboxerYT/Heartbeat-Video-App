@@ -1,5 +1,6 @@
 import AudioToolbox
 import SwiftUI
+import UIKit
 
 struct RecordPVTResult {
     let durationSeconds: Int
@@ -22,7 +23,9 @@ struct RecordPVTSessionView: View {
     let onCancel: () -> Void
     let onComplete: (RecordPVTResult) -> Void
 
+    @Environment(\.layoutViewportSize) private var layoutViewportSize
     @StateObject private var viewModel: ViewModel
+    private var stimulusSize: CGFloat { scaled(124) }
 
     init(durationSeconds: Int, title: String, onCancel: @escaping () -> Void, onComplete: @escaping (RecordPVTResult) -> Void) {
         self.durationSeconds = durationSeconds
@@ -46,63 +49,81 @@ struct RecordPVTSessionView: View {
     }
 
     private var instructionsView: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: scaled(14)) {
             Text(title)
-                .font(.title2.bold())
+                .font(.system(size: scaled(28), weight: .black, design: .rounded))
             Text("Duration: \(durationSeconds / 60) mins")
-                .font(.subheadline)
+                .font(.system(size: scaled(17), weight: .semibold, design: .rounded))
                 .foregroundStyle(.secondary)
 
-            Text("Only tap the red circle.")
+            Text("Tap circles only.")
+                .font(.system(size: scaled(18), weight: .semibold, design: .rounded))
             Text("Do not tap triangles.")
-            Text("Tapping before shapes appear counts as a false start.")
+                .font(.system(size: scaled(18), weight: .semibold, design: .rounded))
+            Text("Early taps = false starts.")
+                .font(.system(size: scaled(18), weight: .semibold, design: .rounded))
 
-            HStack(spacing: 12) {
+            HStack(spacing: scaled(12)) {
                 Button("Cancel") {
                     onCancel()
                 }
                 .buttonStyle(.bordered)
+                .font(.system(size: scaled(17), weight: .bold, design: .rounded))
+                .padding(.vertical, scaled(4))
 
                 Button("Start PVT") {
                     viewModel.start()
                 }
                 .buttonStyle(.borderedProminent)
+                .font(.system(size: scaled(17), weight: .black, design: .rounded))
+                .padding(.vertical, scaled(4))
             }
-            .padding(.top, 8)
+            .padding(.top, scaled(8))
         }
-        .padding()
+        .padding(scaled(14))
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
     private var runningView: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
+        GeometryReader { geometry in
+            ZStack(alignment: .top) {
+                Color.black.ignoresSafeArea()
 
-            VStack(spacing: 20) {
                 Text("\(Int(ceil(viewModel.remainingSeconds)))s")
-                    .font(.headline)
+                    .font(.system(size: scaled(28), weight: .black, design: .rounded))
                     .foregroundStyle(.white)
+                    .padding(.top, scaled(16))
+                    .allowsHitTesting(false)
+
+                HStack {
+                    Spacer()
+                    Button("Cancel") {
+                        viewModel.cancelRun()
+                        onCancel()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
+                    .font(.system(size: scaled(14), weight: .black, design: .rounded))
+                }
+                .padding(.top, scaled(16))
+                .padding(.horizontal, scaled(16))
 
                 if viewModel.isStimulusVisible {
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 18) {
-                        ForEach(0..<4, id: \.self) { index in
-                            Button {
-                                viewModel.tapShape(index: index)
-                            } label: {
-                                shapeView(isCircle: index == viewModel.correctIndex)
-                                    .frame(width: 95, height: 95)
-                            }
-                            .buttonStyle(.plain)
-                        }
+                    Button {
+                        viewModel.tapStimulus()
+                    } label: {
+                        shapeView(stimulusType: viewModel.stimulusType)
+                            .frame(width: stimulusSize, height: stimulusSize)
                     }
-                    .padding(.horizontal, 24)
+                    .buttonStyle(.plain)
+                    .position(stimulusPoint(in: geometry.size))
                 }
-            }
 
-            if let flash = viewModel.flashColor {
-                (flash == .green ? Color.green : Color.red)
-                    .opacity(0.5)
-                    .ignoresSafeArea()
+                if let flash = viewModel.flashColor {
+                    (flash == .green ? Color.green : Color.red)
+                        .opacity(0.5)
+                        .ignoresSafeArea()
+                }
             }
         }
         .contentShape(Rectangle())
@@ -113,9 +134,9 @@ struct RecordPVTSessionView: View {
 
     private var resultView: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: scaled(10)) {
                 Text("\(title) Result")
-                    .font(.title2.bold())
+                    .font(.system(size: scaled(28), weight: .black, design: .rounded))
 
                 if let result = viewModel.result {
                     Group {
@@ -126,27 +147,50 @@ struct RecordPVTSessionView: View {
                         Text("Mean reaction: \(result.meanReactionMS) ms")
                         Text("Median reaction: \(result.medianReactionMS) ms")
                     }
-                    .font(.body)
+                    .font(.system(size: scaled(17), weight: .regular, design: .rounded))
 
                     Button("Use Result") {
                         onComplete(result)
                     }
                     .buttonStyle(.borderedProminent)
-                    .padding(.top, 8)
+                    .font(.system(size: scaled(17), weight: .black, design: .rounded))
+                    .padding(.top, scaled(8))
                 }
             }
-            .padding()
+            .padding(scaled(14))
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
     @ViewBuilder
-    private func shapeView(isCircle: Bool) -> some View {
-        if isCircle {
+    private func shapeView(stimulusType: ViewModel.StimulusType) -> some View {
+        if stimulusType == .circle {
             Circle().fill(.red)
         } else {
             Triangle().fill(.red)
         }
+    }
+
+    private func stimulusPoint(in size: CGSize) -> CGPoint {
+        let margin = stimulusSize / 2
+        let usableWidth = max(1, size.width - (margin * 2))
+        let usableHeight = max(1, size.height - (margin * 2))
+        let x = margin + (viewModel.stimulusPosition.x * usableWidth)
+        let y = margin + (viewModel.stimulusPosition.y * usableHeight)
+        return CGPoint(x: x, y: y)
+    }
+
+    private var uiScale: CGFloat {
+        let referenceWidth: CGFloat = 393 // iPhone 16 Pro
+        let referenceHeight: CGFloat = 852
+        let measuredWidth = layoutViewportSize.width > 0 ? layoutViewportSize.width : UIScreen.main.bounds.width
+        let measuredHeight = layoutViewportSize.height > 0 ? layoutViewportSize.height : UIScreen.main.bounds.height
+        let rawScale = min(measuredWidth / referenceWidth, measuredHeight / referenceHeight)
+        return min(max(rawScale, 0.9), 1.22)
+    }
+
+    private func scaled(_ value: CGFloat) -> CGFloat {
+        value * uiScale
     }
 }
 
@@ -164,20 +208,26 @@ extension RecordPVTSessionView {
             case green
         }
 
+        enum StimulusType {
+            case circle
+            case triangle
+        }
+
         @Published private(set) var phase: Phase = .instructions
         @Published private(set) var remainingSeconds: TimeInterval = 0
         @Published private(set) var isStimulusVisible = false
-        @Published private(set) var correctIndex = 0
+        @Published private(set) var stimulusType: StimulusType = .circle
+        @Published private(set) var stimulusPosition: CGPoint = CGPoint(x: 0.5, y: 0.5)
         @Published private(set) var flashColor: FlashColor?
         @Published private(set) var result: RecordPVTResult?
 
         private let durationSeconds: Int
-        private let minIntervalSeconds: UInt64 = 3
-        private let maxIntervalSeconds: UInt64 = 5
+        private let minIntervalSeconds: TimeInterval = 0.5
+        private let maxIntervalSeconds: TimeInterval = 2.5
+        private let triangleChanceDivisor = 8
 
         private var endTime: Date?
         private var shownAt: Date?
-        private var previousCorrectIndex: Int?
         private var schedulerTask: Task<Void, Never>?
         private var timeoutTask: Task<Void, Never>?
         private var countdownTask: Task<Void, Never>?
@@ -208,16 +258,21 @@ extension RecordPVTSessionView {
             flash(.red)
         }
 
-        func tapShape(index: Int) {
+        func tapStimulus() {
             guard phase == .running, isStimulusVisible else { return }
             timeoutTask?.cancel()
             timeoutTask = nil
 
             let reactionMS = Int((Date().timeIntervalSince(shownAt ?? Date())) * 1000)
-            if index == correctIndex && reactionMS >= 100 {
-                correctTaps += 1
-                reactionTimesMS.append(reactionMS)
-                flash(.green)
+            if stimulusType == .circle {
+                if reactionMS >= 100 {
+                    correctTaps += 1
+                    reactionTimesMS.append(reactionMS)
+                    flash(.green)
+                } else {
+                    incorrectTaps += 1
+                    flash(.red)
+                }
             } else {
                 incorrectTaps += 1
                 flash(.red)
@@ -228,14 +283,22 @@ extension RecordPVTSessionView {
             scheduleNext()
         }
 
+        func cancelRun() {
+            guard phase == .running else { return }
+            reset()
+            endTime = nil
+            shownAt = nil
+            phase = .instructions
+        }
+
         private func reset() {
             cancelTasks()
             remainingSeconds = 0
             isStimulusVisible = false
-            correctIndex = 0
+            stimulusType = .circle
+            stimulusPosition = CGPoint(x: 0.5, y: 0.5)
             flashColor = nil
             result = nil
-            previousCorrectIndex = nil
 
             reactionTimesMS = []
             totalStimuli = 0
@@ -250,8 +313,8 @@ extension RecordPVTSessionView {
             schedulerTask?.cancel()
             schedulerTask = Task { [weak self] in
                 guard let self else { return }
-                let delay = UInt64.random(in: minIntervalSeconds...maxIntervalSeconds)
-                try? await Task.sleep(nanoseconds: delay * 1_000_000_000)
+                let delay = Double.random(in: minIntervalSeconds...maxIntervalSeconds)
+                try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
                 guard !Task.isCancelled else { return }
                 self.showStimulus()
             }
@@ -265,12 +328,8 @@ extension RecordPVTSessionView {
                 return
             }
 
-            var nextIndex = Int.random(in: 0..<4)
-            if let previousCorrectIndex, nextIndex == previousCorrectIndex {
-                nextIndex = (nextIndex + Int.random(in: 1...3)) % 4
-            }
-            correctIndex = nextIndex
-            previousCorrectIndex = nextIndex
+            stimulusType = Int.random(in: 1...triangleChanceDivisor) == 1 ? .triangle : .circle
+            stimulusPosition = CGPoint(x: CGFloat.random(in: 0...1), y: CGFloat.random(in: 0...1))
 
             isStimulusVisible = true
             shownAt = Date()
@@ -279,7 +338,8 @@ extension RecordPVTSessionView {
             timeoutTask?.cancel()
             timeoutTask = Task { [weak self] in
                 guard let self else { return }
-                let timeoutNS = UInt64(max(0.2, AppSettings.pvtResponseTimeoutSeconds) * 1_000_000_000)
+                let timeoutSeconds = self.stimulusType == .triangle ? 1.0 : max(0.2, AppSettings.pvtResponseTimeoutSeconds)
+                let timeoutNS = UInt64(timeoutSeconds * 1_000_000_000)
                 try? await Task.sleep(nanoseconds: timeoutNS)
                 guard !Task.isCancelled else { return }
                 self.handleMiss()
@@ -288,8 +348,10 @@ extension RecordPVTSessionView {
 
         private func handleMiss() {
             guard phase == .running, isStimulusVisible else { return }
-            misses += 1
-            flash(.red)
+            if stimulusType == .circle {
+                misses += 1
+                flash(.red)
+            }
             isStimulusVisible = false
             shownAt = nil
             scheduleNext()

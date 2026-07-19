@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>747827428420-id1q23r9e8b5rmn9od1rcakrtns6qvqe.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.747827428420-id1q23r9e8b5rmn9od1rcakrtns6qvqe</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCs3i1YGkbwtZ6km4PGT5Buy3zL1xIm4AU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>747827428420</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Geo.Pulse-Point</string>
+	<key>PROJECT_ID</key>
+	<string>ticker-flip</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ticker-flip.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:747827428420:ios:6b418f486f58939ed25011</string>
+</dict>
+</plist>

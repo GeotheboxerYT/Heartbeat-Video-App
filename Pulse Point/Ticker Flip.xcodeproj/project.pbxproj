@@ -1,0 +1,640 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C896A5AF2FE2274400875B00 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C896A5AE2FE2274400875B00 /* FirebaseAuth */; };
+		C896A5B12FE2274400875B00 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = C896A5B02FE2274400875B00 /* FirebaseCore */; };
+		C896A5B32FE2274400875B00 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = C896A5B22FE2274400875B00 /* FirebaseDatabase */; };
+		C896A5B52FE2274400875B00 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C896A5B42FE2274400875B00 /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C8F72ABC2F4FD10A0055A138 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8F72AA32F4FD1070055A138 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C8F72AAA2F4FD1070055A138;
+			remoteInfo = "Pulse Point";
+		};
+		C8F72AC62F4FD10A0055A138 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8F72AA32F4FD1070055A138 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C8F72AAA2F4FD1070055A138;
+			remoteInfo = "Pulse Point";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C8F72AAB2F4FD1070055A138 /* Ticker Flip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ticker Flip.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8F72ABB2F4FD10A0055A138 /* Ticker FlipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ticker FlipTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8F72AC52F4FD10A0055A138 /* Ticker FlipUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ticker FlipUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		C8F72AAD2F4FD1070055A138 /* Pulse Point */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Pulse Point";
+			sourceTree = "<group>";
+		};
+		C8F72ABE2F4FD10A0055A138 /* Pulse PointTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Pulse PointTests";
+			sourceTree = "<group>";
+		};
+		C8F72AC82F4FD10A0055A138 /* Pulse PointUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Pulse PointUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C8F72AA82F4FD1070055A138 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C896A5B32FE2274400875B00 /* FirebaseDatabase in Frameworks */,
+				C896A5B52FE2274400875B00 /* FirebaseFirestore in Frameworks */,
+				C896A5B12FE2274400875B00 /* FirebaseCore in Frameworks */,
+				C896A5AF2FE2274400875B00 /* FirebaseAuth in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8F72AB82F4FD10A0055A138 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8F72AC22F4FD10A0055A138 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C8F72AA22F4FD1070055A138 = {
+			isa = PBXGroup;
+			children = (
+				C8F72AAD2F4FD1070055A138 /* Pulse Point */,
+				C8F72ABE2F4FD10A0055A138 /* Pulse PointTests */,
+				C8F72AC82F4FD10A0055A138 /* Pulse PointUITests */,
+				C8F72AAC2F4FD1070055A138 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C8F72AAC2F4FD1070055A138 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C8F72AAB2F4FD1070055A138 /* Ticker Flip.app */,
+				C8F72ABB2F4FD10A0055A138 /* Ticker FlipTests.xctest */,
+				C8F72AC52F4FD10A0055A138 /* Ticker FlipUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C8F72AAA2F4FD1070055A138 /* Ticker Flip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8F72ACF2F4FD10A0055A138 /* Build configuration list for PBXNativeTarget "Ticker Flip" */;
+			buildPhases = (
+				C8F72AA72F4FD1070055A138 /* Sources */,
+				C8F72AA82F4FD1070055A138 /* Frameworks */,
+				C8F72AA92F4FD1070055A138 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C8F72AAD2F4FD1070055A138 /* Pulse Point */,
+			);
+			name = "Ticker Flip";
+			packageProductDependencies = (
+				C896A5AE2FE2274400875B00 /* FirebaseAuth */,
+				C896A5B02FE2274400875B00 /* FirebaseCore */,
+				C896A5B22FE2274400875B00 /* FirebaseDatabase */,
+				C896A5B42FE2274400875B00 /* FirebaseFirestore */,
+			);
+			productName = "Pulse Point";
+			productReference = C8F72AAB2F4FD1070055A138 /* Ticker Flip.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C8F72ABA2F4FD10A0055A138 /* Ticker FlipTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8F72AD22F4FD10A0055A138 /* Build configuration list for PBXNativeTarget "Ticker FlipTests" */;
+			buildPhases = (
+				C8F72AB72F4FD10A0055A138 /* Sources */,
+				C8F72AB82F4FD10A0055A138 /* Frameworks */,
+				C8F72AB92F4FD10A0055A138 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C8F72ABD2F4FD10A0055A138 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C8F72ABE2F4FD10A0055A138 /* Pulse PointTests */,
+			);
+			name = "Ticker FlipTests";
+			packageProductDependencies = (
+			);
+			productName = "Pulse PointTests";
+			productReference = C8F72ABB2F4FD10A0055A138 /* Ticker FlipTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C8F72AC42F4FD10A0055A138 /* Ticker FlipUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8F72AD52F4FD10A0055A138 /* Build configuration list for PBXNativeTarget "Ticker FlipUITests" */;
+			buildPhases = (
+				C8F72AC12F4FD10A0055A138 /* Sources */,
+				C8F72AC22F4FD10A0055A138 /* Frameworks */,
+				C8F72AC32F4FD10A0055A138 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C8F72AC72F4FD10A0055A138 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C8F72AC82F4FD10A0055A138 /* Pulse PointUITests */,
+			);
+			name = "Ticker FlipUITests";
+			packageProductDependencies = (
+			);
+			productName = "Pulse PointUITests";
+			productReference = C8F72AC52F4FD10A0055A138 /* Ticker FlipUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C8F72AA32F4FD1070055A138 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					C8F72AAA2F4FD1070055A138 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					C8F72ABA2F4FD10A0055A138 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = C8F72AAA2F4FD1070055A138;
+					};
+					C8F72AC42F4FD10A0055A138 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = C8F72AAA2F4FD1070055A138;
+					};
+				};
+			};
+			buildConfigurationList = C8F72AA62F4FD1070055A138 /* Build configuration list for PBXProject "Ticker Flip" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C8F72AA22F4FD1070055A138;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C896A5AD2FE2274400875B00 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C8F72AAC2F4FD1070055A138 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C8F72AAA2F4FD1070055A138 /* Ticker Flip */,
+				C8F72ABA2F4FD10A0055A138 /* Ticker FlipTests */,
+				C8F72AC42F4FD10A0055A138 /* Ticker FlipUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C8F72AA92F4FD1070055A138 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8F72AB92F4FD10A0055A138 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8F72AC32F4FD10A0055A138 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C8F72AA72F4FD1070055A138 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8F72AB72F4FD10A0055A138 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8F72AC12F4FD10A0055A138 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C8F72ABD2F4FD10A0055A138 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C8F72AAA2F4FD1070055A138 /* Ticker Flip */;
+			targetProxy = C8F72ABC2F4FD10A0055A138 /* PBXContainerItemProxy */;
+		};
+		C8F72AC72F4FD10A0055A138 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C8F72AAA2F4FD1070055A138 /* Ticker Flip */;
+			targetProxy = C8F72AC62F4FD10A0055A138 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C8F72ACD2F4FD10A0055A138 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C8F72ACE2F4FD10A0055A138 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		C8F72AD02F4FD10A0055A138 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Pulse Point/Pulse_Point.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = S96R473CT9;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Flip";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsLocalNetworking = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app connects to Bluetooth heart-rate monitors for workouts and overnight sleep tracking.";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app connects to Bluetooth heart-rate monitors for workouts and overnight sleep tracking.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app records workout video.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your heart rate from Apple Health for workouts and sleep tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app can write workout and wellness data to Apple Health when enabled.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app connects to your local development API server.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app records workout audio with video.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app saves reviewed videos with BPM overlay to your Photo Library.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = "bluetooth-central";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "Geo.Pulse-Point";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C8F72AD12F4FD10A0055A138 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Pulse Point/Pulse_Point.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = S96R473CT9;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Flip";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsLocalNetworking = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app connects to Bluetooth heart-rate monitors for workouts and overnight sleep tracking.";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app connects to Bluetooth heart-rate monitors for workouts and overnight sleep tracking.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app records workout video.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your heart rate from Apple Health for workouts and sleep tracking.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app can write workout and wellness data to Apple Health when enabled.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app connects to your local development API server.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app records workout audio with video.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app saves reviewed videos with BPM overlay to your Photo Library.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = "bluetooth-central";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "Geo.Pulse-Point";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C8F72AD32F4FD10A0055A138 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Geo.Pulse-PointTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ticker Flip.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ticker Flip";
+			};
+			name = Debug;
+		};
+		C8F72AD42F4FD10A0055A138 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Geo.Pulse-PointTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ticker Flip.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ticker Flip";
+			};
+			name = Release;
+		};
+		C8F72AD62F4FD10A0055A138 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Geo.Pulse-PointUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Pulse Point";
+			};
+			name = Debug;
+		};
+		C8F72AD72F4FD10A0055A138 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Geo.Pulse-PointUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Pulse Point";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C8F72AA62F4FD1070055A138 /* Build configuration list for PBXProject "Ticker Flip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8F72ACD2F4FD10A0055A138 /* Debug */,
+				C8F72ACE2F4FD10A0055A138 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8F72ACF2F4FD10A0055A138 /* Build configuration list for PBXNativeTarget "Ticker Flip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8F72AD02F4FD10A0055A138 /* Debug */,
+				C8F72AD12F4FD10A0055A138 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8F72AD22F4FD10A0055A138 /* Build configuration list for PBXNativeTarget "Ticker FlipTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8F72AD32F4FD10A0055A138 /* Debug */,
+				C8F72AD42F4FD10A0055A138 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8F72AD52F4FD10A0055A138 /* Build configuration list for PBXNativeTarget "Ticker FlipUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8F72AD62F4FD10A0055A138 /* Debug */,
+				C8F72AD72F4FD10A0055A138 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C896A5AD2FE2274400875B00 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.15.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C896A5AE2FE2274400875B00 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C896A5AD2FE2274400875B00 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		C896A5B02FE2274400875B00 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C896A5AD2FE2274400875B00 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		C896A5B22FE2274400875B00 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C896A5AD2FE2274400875B00 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		C896A5B42FE2274400875B00 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C896A5AD2FE2274400875B00 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C8F72AA32F4FD1070055A138 /* Project object */;
+}

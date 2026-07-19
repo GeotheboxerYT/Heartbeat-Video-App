@@ -16,6 +16,9 @@ enum AppSettings {
         static let hapticsEnabled = "settings.hapticsEnabled"
         static let apiBaseURL = "settings.apiBaseURL"
         static let apiKey = "settings.apiKey"
+        static let preferredHeartRateSource = "settings.preferredHeartRateSource"
+        static let preferredHeartRateDeviceID = "settings.preferredHeartRateDeviceID"
+        static let preferredHeartRateDeviceIDs = "settings.preferredHeartRateDeviceIDs"
     }
 
     static var defaultCameraPosition: AVCaptureDevice.Position {
@@ -66,7 +69,7 @@ enum AppSettings {
 
     static var pvtComparisonDurationSeconds: Int {
         let value = UserDefaults.standard.integer(forKey: Keys.pvtComparisonDurationSeconds)
-        return [60, 180, 300, 600].contains(value) ? value : 60
+        return [300, 600].contains(value) ? value : 300
     }
 
     static var apiBaseURL: String {
@@ -75,5 +78,62 @@ enum AppSettings {
 
     static var apiKey: String {
         UserDefaults.standard.string(forKey: Keys.apiKey) ?? "pp_local_9f3k2m8x7q1w4z6r"
+    }
+
+    static var preferredHeartRateSource: HeartRateInputSource {
+        let raw = UserDefaults.standard.string(forKey: Keys.preferredHeartRateSource) ?? HeartRateInputSource.bluetooth.rawValue
+        return HeartRateInputSource(rawValue: raw) ?? .bluetooth
+    }
+
+    static func setPreferredHeartRateSource(_ source: HeartRateInputSource) {
+        UserDefaults.standard.set(source.rawValue, forKey: Keys.preferredHeartRateSource)
+    }
+
+    static var preferredHeartRateDeviceID: UUID? {
+        if let ids = UserDefaults.standard.array(forKey: Keys.preferredHeartRateDeviceIDs) as? [String] {
+            let resolved = ids.compactMap(UUID.init(uuidString:)).first
+            if let resolved {
+                return resolved
+            }
+        }
+        guard let raw = UserDefaults.standard.string(forKey: Keys.preferredHeartRateDeviceID) else {
+            return nil
+        }
+        return UUID(uuidString: raw)
+    }
+
+    static func setPreferredHeartRateDeviceID(_ id: UUID?) {
+        if let id {
+            UserDefaults.standard.set(id.uuidString, forKey: Keys.preferredHeartRateDeviceID)
+            UserDefaults.standard.set([id.uuidString], forKey: Keys.preferredHeartRateDeviceIDs)
+        } else {
+            UserDefaults.standard.removeObject(forKey: Keys.preferredHeartRateDeviceID)
+            UserDefaults.standard.removeObject(forKey: Keys.preferredHeartRateDeviceIDs)
+        }
+    }
+
+    static var preferredHeartRateDeviceIDs: Set<UUID> {
+        if let rawIDs = UserDefaults.standard.array(forKey: Keys.preferredHeartRateDeviceIDs) as? [String] {
+            let resolved = Set(rawIDs.compactMap(UUID.init(uuidString:)))
+            if !resolved.isEmpty {
+                return resolved
+            }
+        }
+        if let fallback = preferredHeartRateDeviceID {
+            return [fallback]
+        }
+        return []
+    }
+
+    static func setPreferredHeartRateDeviceIDs(_ ids: Set<UUID>) {
+        if ids.isEmpty {
+            UserDefaults.standard.removeObject(forKey: Keys.preferredHeartRateDeviceIDs)
+            UserDefaults.standard.removeObject(forKey: Keys.preferredHeartRateDeviceID)
+            return
+        }
+
+        let sorted = ids.map(\.uuidString).sorted()
+        UserDefaults.standard.set(sorted, forKey: Keys.preferredHeartRateDeviceIDs)
+        UserDefaults.standard.set(sorted.first, forKey: Keys.preferredHeartRateDeviceID)
     }
 }
