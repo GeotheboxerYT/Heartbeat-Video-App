@@ -2,6 +2,8 @@ import AVFoundation
 import Foundation
 
 enum AppSettings {
+    static let productionAPIBaseURL = "https://ticker-flip-api.onrender.com"
+
     enum Keys {
         static let defaultCameraPosition = "settings.defaultCameraPosition"
         static let rememberLastUsedCamera = "settings.rememberLastUsedCamera"
@@ -73,7 +75,7 @@ enum AppSettings {
     }
 
     static var apiBaseURL: String {
-        UserDefaults.standard.string(forKey: Keys.apiBaseURL) ?? "http://127.0.0.1:3000"
+        UserDefaults.standard.string(forKey: Keys.apiBaseURL) ?? productionAPIBaseURL
     }
 
     static var apiKey: String {

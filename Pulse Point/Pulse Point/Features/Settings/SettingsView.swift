@@ -14,7 +14,7 @@ struct SettingsView: View {
     @AppStorage(AppSettings.Keys.pvtComparisonDurationSeconds) private var pvtComparisonDurationSeconds = 300
     @AppStorage(AppSettings.Keys.keepScreenAwakeDuringRecording) private var keepScreenAwakeDuringRecording = true
     @AppStorage(AppSettings.Keys.hapticsEnabled) private var hapticsEnabled = true
-    @AppStorage(AppSettings.Keys.apiBaseURL) private var apiBaseURL = "http://127.0.0.1:3000"
+    @AppStorage(AppSettings.Keys.apiBaseURL) private var apiBaseURL = AppSettings.productionAPIBaseURL
     @AppStorage(AppSettings.Keys.apiKey) private var apiKey = "pp_local_9f3k2m8x7q1w4z6r"
 
     @State private var storageBytes: Int64 = 0
