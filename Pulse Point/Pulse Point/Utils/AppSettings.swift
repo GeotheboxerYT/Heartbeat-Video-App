@@ -2,7 +2,7 @@ import AVFoundation
 import Foundation
 
 enum AppSettings {
-    static let productionAPIBaseURL = "https://ticker-flip-api.onrender.com"
+    static let productionAPIBaseURL = "https://api.tickerflip.com"
 
     enum Keys {
         static let defaultCameraPosition = "settings.defaultCameraPosition"

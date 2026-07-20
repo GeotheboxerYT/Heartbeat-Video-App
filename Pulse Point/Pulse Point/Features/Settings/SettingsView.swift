@@ -75,7 +75,7 @@ struct SettingsView: View {
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
 
-                    Text("Use your live domain URL for production (example: https://api.yourdomain.com). Simulator can use 127.0.0.1; physical iPhone must use LAN IP or live domain.")
+                    Text("Production API: https://api.tickerflip.com. Simulator can use 127.0.0.1 for local backend testing.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
 

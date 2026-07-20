@@ -5,16 +5,16 @@ This moves Ticker Flip from your Mac to the internet so other users can use it.
 Think of it like this:
 
 ```text
-iPhone app -> https://api.YOURDOMAIN.com -> cloud MySQL/TiDB database
+iPhone app -> https://api.tickerflip.com -> cloud MySQL/TiDB database
                                       -> cloud video storage
-Website    -> https://YOURDOMAIN.com
+Website    -> https://tickerflip.com
 ```
 
 The website and API should usually be separate:
 
-- `YOURDOMAIN.com` = public website / landing page
-- `api.YOURDOMAIN.com` = backend API used by the iPhone app
-- `admin.YOURDOMAIN.com` is optional later; for now `/admin` lives on the API
+- `tickerflip.com` = public website / landing page
+- `api.tickerflip.com` = backend API used by the iPhone app
+- `admin.tickerflip.com` is optional later; for now `/admin` lives on the API
 
 ## Recommended Beginner Stack
 
@@ -115,8 +115,8 @@ NODE_VERSION=20
 PORT=10000
 API_KEY=make_a_long_random_secret
 ADMIN_PASSWORD=make_a_private_admin_password
-PUBLIC_BASE_URL=https://api.YOURDOMAIN.com
-ALLOWED_ORIGINS=https://YOURDOMAIN.com,https://www.YOURDOMAIN.com
+PUBLIC_BASE_URL=https://api.tickerflip.com
+ALLOWED_ORIGINS=https://tickerflip.com,https://www.tickerflip.com
 
 DB_HOST=from_tidb
 DB_PORT=4000
@@ -139,7 +139,7 @@ R2_ACCOUNT_ID=your_cloudflare_account_id
 R2_ACCESS_KEY_ID=your_r2_access_key
 R2_SECRET_ACCESS_KEY=your_r2_secret_key
 R2_BUCKET=ticker-flip-videos
-R2_PUBLIC_BASE_URL=https://videos.YOURDOMAIN.com
+R2_PUBLIC_BASE_URL=https://videos.tickerflip.com
 ```
 
 `R2_ENDPOINT` can stay blank if `R2_ACCOUNT_ID` is set.
@@ -149,13 +149,13 @@ R2_PUBLIC_BASE_URL=https://videos.YOURDOMAIN.com
 Recommended DNS layout:
 
 ```text
-YOURDOMAIN.com       -> website host
-www.YOURDOMAIN.com   -> website host
-api.YOURDOMAIN.com   -> Render API service
-videos.YOURDOMAIN.com -> Cloudflare R2 public/custom domain
+tickerflip.com       -> website host
+www.tickerflip.com   -> website host
+api.tickerflip.com   -> Render API service
+videos.tickerflip.com -> Cloudflare R2 public/custom domain
 ```
 
-In Render, add `api.YOURDOMAIN.com` as a Custom Domain for the API service.
+In Render, add `api.tickerflip.com` as a Custom Domain for the API service.
 
 In your DNS provider, add the CNAME record Render gives you.
 
@@ -164,7 +164,7 @@ In your DNS provider, add the CNAME record Render gives you.
 Once Render deploys:
 
 ```bash
-curl "https://api.YOURDOMAIN.com/health"
+curl "https://api.tickerflip.com/health"
 ```
 
 Expected:
@@ -176,7 +176,7 @@ Expected:
 Test admin:
 
 ```text
-https://api.YOURDOMAIN.com/admin
+https://api.tickerflip.com/admin
 ```
 
 It should ask for the admin password if `ADMIN_PASSWORD` is set.
@@ -186,7 +186,7 @@ It should ask for the admin password if `ADMIN_PASSWORD` is set.
 In the app Settings:
 
 ```text
-API Base URL: https://api.YOURDOMAIN.com
+API Base URL: https://api.tickerflip.com
 API Key: same API_KEY from Render
 ```
 
