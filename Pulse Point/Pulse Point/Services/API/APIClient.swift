@@ -150,14 +150,20 @@ struct APIUserResolveResponse: Decodable {
 
 enum APIClientError: LocalizedError {
     case invalidBaseURL
+    case requestTimedOut(String)
     case badStatusCode(Int, String)
+    case network(URLError)
 
     var errorDescription: String? {
         switch self {
         case .invalidBaseURL:
             return "Invalid API base URL in settings."
+        case .requestTimedOut(let action):
+            return "\(action) timed out. The session is still saved locally. If this is Render Free, open Settings > Test API once to wake the server, then retry API sync."
         case .badStatusCode(let code, let body):
             return "API request failed (\(code)): \(body)"
+        case .network(let error):
+            return "API network error: \(error.localizedDescription)"
         }
     }
 }
@@ -169,7 +175,7 @@ final class APIClient: @unchecked Sendable {
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
-    init(session: URLSession = .shared) {
+    init(session: URLSession = APIClient.makeDefaultSession()) {
         self.session = session
 
         let enc = JSONEncoder()
@@ -233,17 +239,12 @@ final class APIClient: @unchecked Sendable {
         let boundary = "Boundary-\(UUID().uuidString)"
         var request = try makeRequest(path: "/api/upload/video", method: "POST", includeAPIKey: true)
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 900
 
-        let fileData = try Data(contentsOf: fileURL)
-        var body = Data()
-        body.append("--\(boundary)\r\n")
-        body.append("Content-Disposition: form-data; name=\"video\"; filename=\"\(fileURL.lastPathComponent)\"\r\n")
-        body.append("Content-Type: video/quicktime\r\n\r\n")
-        body.append(fileData)
-        body.append("\r\n--\(boundary)--\r\n")
+        let multipartURL = try makeMultipartUploadFile(fileURL: fileURL, boundary: boundary)
+        defer { try? FileManager.default.removeItem(at: multipartURL) }
 
-        request.httpBody = body
-        let (data, response) = try await session.data(for: request)
+        let (data, response) = try await performUpload(request, fileURL: multipartURL, action: "Video upload")
         try validateStatus(response: response, data: data)
         return try decoder.decode(APIVideoUploadResponse.self, from: data)
     }
@@ -258,7 +259,7 @@ final class APIClient: @unchecked Sendable {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = body
 
-        let (data, response) = try await session.data(for: request)
+        let (data, response) = try await performRequest(request, action: "API request")
         try validateStatus(response: response, data: data)
 
         return data
@@ -274,10 +275,65 @@ final class APIClient: @unchecked Sendable {
 
         var request = URLRequest(url: url)
         request.httpMethod = method
+        request.timeoutInterval = 180
         if includeAPIKey {
             request.setValue(AppSettings.apiKey, forHTTPHeaderField: "x-api-key")
         }
         return request
+    }
+
+    private func performRequest(_ request: URLRequest, action: String) async throws -> (Data, URLResponse) {
+        do {
+            return try await session.data(for: request)
+        } catch let error as URLError {
+            throw mapNetworkError(error, action: action)
+        }
+    }
+
+    private func performUpload(_ request: URLRequest, fileURL: URL, action: String) async throws -> (Data, URLResponse) {
+        do {
+            return try await session.upload(for: request, fromFile: fileURL)
+        } catch let error as URLError {
+            throw mapNetworkError(error, action: action)
+        }
+    }
+
+    private func mapNetworkError(_ error: URLError, action: String) -> APIClientError {
+        if error.code == .timedOut {
+            return .requestTimedOut(action)
+        }
+        return .network(error)
+    }
+
+    private func makeMultipartUploadFile(fileURL: URL, boundary: String) throws -> URL {
+        let multipartURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("tickerflip-upload-\(UUID().uuidString).body")
+        FileManager.default.createFile(atPath: multipartURL.path, contents: nil)
+
+        let output = try FileHandle(forWritingTo: multipartURL)
+        defer { try? output.close() }
+
+        let header = "--\(boundary)\r\n"
+            + "Content-Disposition: form-data; name=\"video\"; filename=\"\(fileURL.lastPathComponent)\"\r\n"
+            + "Content-Type: video/quicktime\r\n\r\n"
+        if let headerData = header.data(using: .utf8) {
+            output.write(headerData)
+        }
+
+        let input = try FileHandle(forReadingFrom: fileURL)
+        defer { try? input.close() }
+
+        while true {
+            let chunk = input.readData(ofLength: 1_048_576)
+            if chunk.isEmpty { break }
+            output.write(chunk)
+        }
+
+        if let footerData = "\r\n--\(boundary)--\r\n".data(using: .utf8) {
+            output.write(footerData)
+        }
+
+        return multipartURL
     }
 
     private func validateStatus(response: URLResponse, data: Data) throws {
@@ -300,6 +356,14 @@ final class APIClient: @unchecked Sendable {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone.current
         return formatter.string(from: date)
+    }
+
+    private static func makeDefaultSession() -> URLSession {
+        let configuration = URLSessionConfiguration.default
+        configuration.waitsForConnectivity = true
+        configuration.timeoutIntervalForRequest = 180
+        configuration.timeoutIntervalForResource = 900
+        return URLSession(configuration: configuration)
     }
 }
 
