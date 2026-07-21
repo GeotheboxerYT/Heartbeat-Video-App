@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://tickerflip.com/sitemap.xml
